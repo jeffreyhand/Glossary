@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Glossary.Models.Entry>
+
+@{
+    ViewBag.Title = "Glossary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var className = @Model.Count() > 0 ? null : "popular";
+}
+
+<h2 class="@className">
+    Glossary
+    @Html.ActionLink("+ Add New Record", "New", null, new { @class = "btn btn-primary btn-sm addEntry" })
+</h2>
+
+@if (@Model.Count() == 0)
+{
+    <h4>No entries in the Glossary</h4>
+}
+else
+{
+    <table id="entries" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th id="Term" class="col-lg-4 termColumn">
+                    Term
+                    <a href="@Url.Action("Index", new { sortBy = ViewBag.NameSortParm })" class="sortLink">
+                         <span class="glyphicon @(ViewBag.NameSortParm=="ASC" ? "glyphicon-sort-by-alphabet-alt" : "glyphicon-sort-by-alphabet")"></span>
+                    </a>
+                </th>
+                <th class="col-lg-7">Definition</th>
+                <th class="col-lg-1 actionsColumn"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@entry.Term, "Edit", new { @entry.Id })
+                    </td>
+                    <td>
+                        @*Cutoff defintions toolong to display in column*@
+                        @if (@entry.Definition.Length > 99)
+                        {
+                            @entry.Definition.Substring(0, 99)
+                            <text> ... </text>
+                        }
+                        else
+                        {
+                            @entry.Definition
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { @entry.Id }) |
+
+                        @Html.ActionLink("Delete",
+                                            "Delete",
+                                            new { @entry.Id },
+                                            new { onclick = "return confirm('Do you want to delete this entry?')" } )
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+     
+}
+
+

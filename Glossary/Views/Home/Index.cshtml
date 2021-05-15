@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="jumbotron">
+    <h1>Glossary</h1>
+    <div class="recordCount">
+        <p class="lead">
+            @ViewBag.GlossaryCount
+
+            @if (@ViewBag.GlossaryCount == 1)
+            {
+                <text> entry </text>
+            }
+            else
+            {
+                <text> entries </text>
+            }
+        </p>
+    </div>
+    @Html.ActionLink("Go To Glossary >", "Index", "Entry", null, new { @class = "btn btn-primary btn-lg"})
+</div>

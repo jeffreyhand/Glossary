@@ -1,0 +1,36 @@
+﻿@model Glossary.Models.Entry
+@{
+    ViewBag.Title = "Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Glossary Entry</h2>
+
+@using (Html.BeginForm("Save", "Entry"))
+{
+    @Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Term, labelText: "Term")
+        @Html.TextBoxFor(m => m.Term, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Term)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Definition, labelText: "Definition")
+        @Html.TextAreaFor(m => m.Definition, new { @class = "form-control" })  
+        @Html.ValidationMessageFor(m => m.Definition)
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+
+    @* Protect against Cross-site Request Forgery *@
+    @Html.AntiForgeryToken()
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    @Html.ActionLink("Cancel", "Index", "Entry", null, new { @class = "btn btn-default" })
+}
+
+@* Enable client-side validation *@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
